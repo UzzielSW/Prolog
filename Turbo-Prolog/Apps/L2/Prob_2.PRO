@@ -1,5 +1,5 @@
-/* 3. Desplegar Multiplos de 5 entre 20 y 60.
- 20 25 30 35 40 ...
+/* Desplegar Multiplos de 5 entre 20 y 60. Ejemplo: 20 25 30 35 40 ...
+autor: @Brayan Puyol
 */
 
 predicates
@@ -11,7 +11,7 @@ goal
 	ciclo(20).
 
 clauses
-	ciclo(I) :- 
+	ciclo(I) :-
 	I > 60, !;
 
 	write("\n ", I),

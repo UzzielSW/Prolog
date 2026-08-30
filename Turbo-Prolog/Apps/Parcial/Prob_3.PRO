@@ -1,4 +1,4 @@
-/* 2. Leer tres números y encontrar la suma del triple del primero, más el cubo del segundo, más el doble del tercero.
+/* 3. Leer tres números y encontrar la suma del triple del primero, más el cubo del segundo, más el doble del tercero.
 autor: @Brayan Puyol
 */
 
@@ -14,6 +14,6 @@ goal
 	operacion(A, B, C).
 
 clauses
-	operacion(A, B, C) :- 
-	Suma = (3 * A) + (B * B * B) + (2 * C),	
+	operacion(A, B, C) :-
+	Suma = (3 * A) + (B * B * B) + (2 * C),
 	write("Suma: ", Suma).

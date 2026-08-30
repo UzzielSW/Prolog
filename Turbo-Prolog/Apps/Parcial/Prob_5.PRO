@@ -1,9 +1,8 @@
-/* 1. Leer tres números y encontrar la suma del cubo del primero, más el cuadrado del
+/* 5. Leer tres números y encontrar la suma del cubo del primero, más el cuadrado del
 segundo, más el doble del primero por el tercero.
+Ecuacion: A^3 + B^2 + 2(A*C)
 
-Ecuacion: A^3 + B^2 + 2(A*C) 
-
-Nombre: Ashly Mendieta / EC-106-1297
+autor: @Brayan Puyol
 */
 
 predicates
@@ -19,6 +18,6 @@ goal
 	calculo(A, B, C).
 
 clauses
-	calculo(A, B, C) :- 
-	S = (A * A * A) + (B * B) + (2 * A * C),	
+	calculo(A, B, C) :-
+	S = (A * A * A) + (B * B) + (2 * A * C),
 	write("\n El valor es: ", S).

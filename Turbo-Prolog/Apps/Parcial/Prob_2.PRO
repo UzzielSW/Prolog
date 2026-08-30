@@ -2,6 +2,8 @@
  20  400  4.47
  21  441  4.58
  ...
+
+autor: @Brayan Puyol
 */
 
 predicates
@@ -13,13 +15,13 @@ goal
 	ciclo(20).
 
 clauses
-	ciclo(I) :- 
+	ciclo(I) :-
 	I > 40, !;
 
 	write("\n ", I, "  "),
 	P = I * I,
     write(P, "  "),
-	R = sqrt(I), 
+	R = sqrt(I),
     write(R),
 	S = I + 1,
 	ciclo(S).
