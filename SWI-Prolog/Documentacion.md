@@ -41,11 +41,11 @@ Prolog deduce que Carlos es abuelo de Lucas utilizando los hechos almacenados y 
 
 ---
 
-
-
 ## 2. Términos en Prolog
 
-Todo dato manejado por Prolog es un **término**.
+Todo dato manejado por Prolog es un **término**. Los argumentos, las estructuras y los objetivos también son términos. Incluso las cláusulas pueden examinarse y manipularse como términos mediante las herramientas adecuadas del lenguaje.
+
+En el núcleo tradicional de Prolog se distinguen variables, números, átomos y términos compuestos. SWI-Prolog amplía este modelo con tipos y construcciones adicionales. Las listas, por ejemplo, poseen una sintaxis especial construida alrededor de `[]` y `[Cabeza|Cola]`.
 
 Los tipos de términos más importantes son:
 
@@ -57,13 +57,9 @@ Los tipos de términos más importantes son:
 - listas;
 - diccionarios (*dicts*) en SWI-Prolog.
 
-
-
 ### 2.1 Átomos
 
-Un átomo representa una constante simbólica.
-
-Normalmente comienza con una letra minúscula:
+Un átomo representa una constante simbólica. Normalmente comienza con una letra minúscula:
 
 ```prolog
 carlos
@@ -84,7 +80,7 @@ Los átomos se utilizan frecuentemente para representar nombres, categorías, es
 
 ### 2.2 Números
 
-SWI-Prolog permite trabajar, entre otros, con enteros y números de punto flotante.
+SWI-Prolog permite trabajar con enteros y números de punto flotante.
 
 ```prolog
 10
@@ -92,7 +88,7 @@ SWI-Prolog permite trabajar, entre otros, con enteros y números de punto flotan
 3.14
 ```
 
-
+También admite otras representaciones numéricas, como racionales, dependiendo de la operación y la configuración disponible.
 
 ### 2.3 Variables
 
@@ -153,8 +149,6 @@ Los strings son especialmente útiles cuando se trabaja con texto que se desea p
 
 ---
 
-
-
 ## 3. Objetos y relaciones
 
 Prolog modela información principalmente mediante **relaciones**.
@@ -206,8 +200,6 @@ vive_en/3
 
 ---
 
-
-
 ## 4. Hechos
 
 Un hecho declara información que se considera verdadera.
@@ -233,8 +225,6 @@ Todos los hechos terminan con un punto `.`.
 Es recomendable utilizar nombres de predicados que representen claramente la relación que modelan.
 
 ---
-
-
 
 ## 5. Consultas u objetivos
 
@@ -274,8 +264,6 @@ Esto no significa necesariamente que una afirmación sea falsa en el mundo real.
 
 ---
 
-
-
 ## 6. Reglas
 
 Una regla permite deducir información nueva.
@@ -312,9 +300,39 @@ progenitor(X, Y) :-
     madre(X, Y).
 ```
 
+### 6.1 Cláusulas, cabeza y cuerpo
+
+Los hechos y las reglas reciben conjuntamente el nombre de **cláusulas**.
+
+Un hecho contiene solamente una cabeza:
+
+```prolog
+persona(ana).
+```
+
+Una regla contiene una cabeza y un cuerpo separados mediante `:-`:
+
+```prolog
+abuelo(X, Z) :-
+    padre(X, Y),
+    padre(Y, Z).
+```
+
+En este ejemplo:
+
+- `abuelo(X, Z)` es la cabeza;
+- `padre(X, Y), padre(Y, Z)` es el cuerpo;
+- cada llamada del cuerpo es un objetivo.
+
+Conceptualmente, un hecho puede entenderse como una regla cuyo cuerpo siempre tiene éxito:
+
+```prolog
+persona(ana) :- true.
+```
+
+Normalmente se utiliza la forma abreviada `persona(ana).`.
+
 ---
-
-
 
 ## 7. Cómo busca soluciones Prolog
 
@@ -390,8 +408,6 @@ pareja(Persona1, Persona2) :-
 
 ---
 
-
-
 # Sintaxis de SWI-Prolog
 
 ## Mapa mental básico de Prolog
@@ -413,11 +429,7 @@ BACKTRACKING
     busca soluciones alternativas
 ```
 
-
-
 ## 8. Comentarios
-
-
 
 ### Comentario de una línea
 
@@ -427,8 +439,6 @@ Se utiliza `%`.
 % Este es un comentario
 persona(carlos).
 ```
-
-
 
 ### Comentario de varias líneas
 
@@ -443,8 +453,6 @@ persona(carlos).
 ```
 
 ---
-
-
 
 ## 9. Predicados con varios argumentos
 
@@ -469,8 +477,6 @@ empleado/3
 ```
 
 ---
-
-
 
 ## 10. Unificación
 
@@ -519,11 +525,7 @@ true.
 
 ---
 
-
-
 ## 11. Igualdad e identidad de términos
-
-
 
 ### `==`
 
@@ -538,8 +540,6 @@ X = 10.
 ?- X == 10.
 false.
 ```
-
-
 
 ### `\==`
 
@@ -556,11 +556,7 @@ Esta propiedad explica por qué `\==` puede producir resultados inesperados si s
 
 ---
 
-
-
 ## 12. Operadores lógicos y de control
-
-
 
 ### 12.1 Conjunción: `,`
 
@@ -593,8 +589,6 @@ puede_entrar(Persona) :-
     ).
 ```
 
-
-
 ### 12.3 Negación por fallo: `\+`
 
 ```prolog
@@ -621,8 +615,6 @@ Siempre tiene éxito.
 true.
 ```
 
-
-
 ### 12.5 `fail`
 
 Siempre falla.
@@ -635,8 +627,6 @@ false.
 `fail` puede utilizarse deliberadamente para provocar backtracking.
 
 ---
-
-
 
 ## 13. Condicional `if-then-else`
 
@@ -669,8 +659,6 @@ Cuando se combinan `->`, `;` y `,`, es recomendable utilizar paréntesis para ha
 
 ---
 
-
-
 ## 14. Operadores relacionales y comparaciones
 
 Es importante separar tres categorías.
@@ -684,9 +672,6 @@ Es importante separar tres categorías.
 | `\=`     | Tiene éxito si los términos no pueden unificarse. |
 | `==`     | Comprueba identidad estricta sin unificar.        |
 | `\==`    | Comprueba que los términos no sean idénticos.     |
-
-
-
 
 ### 14.2 Comparación aritmética
 
@@ -727,8 +712,6 @@ y no:
 <=
 ```
 
-
-
 ### 14.3 Orden estándar de términos
 
 SWI-Prolog también posee operadores para comparar términos según el orden estándar de Prolog:
@@ -743,8 +726,6 @@ SWI-Prolog también posee operadores para comparar términos según el orden est
 No deben confundirse con las comparaciones aritméticas.
 
 ---
-
-
 
 ## 15. Evaluación de expresiones aritméticas
 
@@ -765,8 +746,6 @@ Para evaluar la expresión se utiliza `is`:
 ?- X is 2 + 3.
 X = 5.
 ```
-
-
 
 ### Operadores aritméticos frecuentes
 
@@ -796,11 +775,7 @@ R = 30.
 
 ---
 
-
-
 ## 16. Lectura de datos
-
-
 
 ### 16.1 `read/1`
 
@@ -844,11 +819,7 @@ En este caso el usuario no necesita escribir un punto al final de la línea.
 
 ---
 
-
-
 ## 17. Impresión de datos
-
-
 
 ### 17.1 `write/1`
 
@@ -858,8 +829,6 @@ Imprime un término sin agregar automáticamente un salto de línea.
 write("Hola").
 ```
 
-
-
 ### 17.2 `writeln/1`
 
 Imprime y agrega un salto de línea.
@@ -867,8 +836,6 @@ Imprime y agrega un salto de línea.
 ```prolog
 writeln("Hola").
 ```
-
-
 
 ### 17.3 `nl/0`
 
@@ -878,8 +845,6 @@ Imprime un salto de línea.
 write("Hola"),
 nl.
 ```
-
-
 
 ### 17.4 `format/2`
 
@@ -898,10 +863,7 @@ Nombre: carlos, Edad: 30
 true.
 ```
 
-
-
 ### Marcadores frecuentes de `format/2`
-
 
 | Marcador | Uso                                                                            |
 | -------- | ------------------------------------------------------------------------------ |
@@ -914,8 +876,6 @@ true.
 
 
 ---
-
-
 
 ## 18. Átomos frente a strings
 
@@ -955,8 +915,6 @@ true.
 true.
 ```
 
-
-
 ### ¿Cuándo utilizar cada uno?
 
 Los **átomos** suelen utilizarse para:
@@ -994,8 +952,6 @@ S = "hola".
 
 ---
 
-
-
 ## 19. Listas
 
 Las listas son una estructura fundamental en Prolog.
@@ -1024,8 +980,6 @@ X = a,
 Resto = [b, c].
 ```
 
-
-
 ### Ejemplo recursivo
 
 ```prolog
@@ -1045,8 +999,6 @@ true.
 SWI-Prolog ya proporciona el predicado estándar `member/2`, por lo que el ejemplo anterior sirve principalmente para comprender recursión y listas.
 
 ---
-
-
 
 ## 20. Recursión
 
@@ -1073,8 +1025,6 @@ R = 120.
 
 ---
 
-
-
 ## 21. Bucles en Prolog
 
 Prolog no utiliza normalmente `for` o `while` como lenguajes imperativos. Las alternativas más comunes son:
@@ -1084,8 +1034,6 @@ Prolog no utiliza normalmente `for` o `while` como lenguajes imperativos. Las al
 3. `between/3`;
 4. `forall/2`;
 5. `repeat/0` cuando se necesita un ciclo de control explícito.
-
-
 
 ### 21.1 Mediante recursión
 
@@ -1112,8 +1060,6 @@ Consulta:
 true.
 ```
 
-
-
 ### 21.2 `between/3`
 
 ```prolog
@@ -1124,8 +1070,6 @@ X = 3 ;
 X = 4 ;
 X = 5.
 ```
-
-
 
 ### 21.3 `forall/2`
 
@@ -1142,8 +1086,6 @@ true.
 ```
 
 ---
-
-
 
 ## 22. El corte `!`
 
@@ -1189,8 +1131,6 @@ Antes de utilizar `!`, conviene comprobar si el problema puede expresarse mejor 
 
 ---
 
-
-
 ## 23. Estructuras o términos compuestos
 
 Un término compuesto permite agrupar varios datos.
@@ -1219,16 +1159,12 @@ Esto es lo más cercano al concepto tradicional de una estructura o registro pos
 
 ---
 
-
-
 ## 24. Registros y diccionarios en SWI-Prolog
 
 Para representar información estructurada pueden utilizarse:
 
 1. términos compuestos;
 2. diccionarios de SWI-Prolog.
-
-
 
 ### 24.1 Término compuesto
 
@@ -1267,8 +1203,6 @@ Los dicts son específicos de SWI-Prolog y resultan útiles cuando los campos co
 
 ---
 
-
-
 ## 25. Backtracking en detalle
 
 Considere:
@@ -1303,8 +1237,6 @@ El orden de los hechos y reglas puede afectar el orden en que aparecen las soluc
 
 # Uso del intérprete de SWI-Prolog
 
-
-
 ## 26. Iniciar SWI-Prolog
 
 Desde la terminal del sistema operativo:
@@ -1323,8 +1255,6 @@ Las consultas se escriben después de ese prompt.
 
 ---
 
-
-
 ## 27. Salir del intérprete
 
 ```prolog
@@ -1332,8 +1262,6 @@ halt.
 ```
 
 ---
-
-
 
 ## 28. Cargar un archivo
 
@@ -1349,9 +1277,9 @@ También puede escribirse:
 consult('familia.pl').
 ```
 
+`consult/1` carga código fuente Prolog formado por hechos, reglas y directivas. No debe confundirse con la lectura general de datos desde un archivo, para la cual se utilizan predicados de entrada y salida como `open/3`, `read_term/3` y `close/1`.
+
 ---
-
-
 
 ## 29. Cargar varios archivos
 
@@ -1360,8 +1288,6 @@ consult('familia.pl').
 ```
 
 ---
-
-
 
 ## 30. Recargar archivos modificados
 
@@ -1377,11 +1303,7 @@ make.
 
 ---
 
-
-
 ## 31. Directorio de trabajo
-
-
 
 ### Mostrar directorio actual
 
@@ -1389,23 +1311,17 @@ make.
 pwd.
 ```
 
-
-
 ### Listar archivos
 
 ```prolog
 ls.
 ```
 
-
-
 ### Cambiar al directorio padre
 
 ```prolog
 cd('..').
 ```
-
-
 
 ### Cambiar de directorio
 
@@ -1425,8 +1341,6 @@ cd('c:/proyectos/prolog').
 
 ## 32. Depuración y traza
 
-
-
 ### Activar traza
 
 ```prolog
@@ -1440,8 +1354,6 @@ La siguiente consulta será seguida por el depurador textual.
 ```prolog
 notrace.
 ```
-
-
 
 ### Desactivar modo de depuración
 
@@ -1473,11 +1385,7 @@ gtrace.
 
 ---
 
-
-
 # Ejecución desde la terminal del sistema operativo
-
-
 
 ## 33. Cargar un programa y permanecer en el intérprete
 
@@ -1519,8 +1427,6 @@ Ejemplo:
 swipl -q -s programa.pl -g iniciar -g halt
 ```
 
-
-
 ### Diferencia entre `-s` y `-f`
 
 Para cargar el programa principal debe preferirse:
@@ -1551,8 +1457,6 @@ Por tanto, `-f programa.pl` y `-s programa.pl` no deben tratarse como equivalent
 
 ## 35. Recomendaciones al escribir reglas
 
-
-
 ### Colocar primero los objetivos que generan o restringen los datos
 
 En lugar de:
@@ -1573,8 +1477,6 @@ resultado(X, Y) :-
     dif(X, Y).
 ```
 
-
-
 ### Utilizar `dif/2` para desigualdad lógica
 
 Cuando el significado deseado es "estos términos deben ser diferentes", `dif/2` suele expresar mejor la intención que `\==`.
@@ -1592,3 +1494,289 @@ El backtracking sí puede deshacer una unificación al regresar a un punto anter
 
 ---
 
+# Organización y características adicionales de SWI-Prolog
+
+## 36. Operadores personalizados
+
+Algunos functores pueden declararse como operadores para escribir términos de una forma más legible.
+
+La declaración se realiza mediante `op/3`:
+
+```prolog
+:- op(500, xfx, pertenece_a).
+```
+
+Después de esta declaración:
+
+```prolog
+ana pertenece_a desarrollo.
+```
+
+equivale al término:
+
+```prolog
+pertenece_a(ana, desarrollo).
+```
+
+Los argumentos de `op/3` indican:
+
+1. la precedencia, mediante un número entre 0 y 1200;
+2. la asociatividad y posición de los argumentos, como `xfx`, `xfy`, `yfx`, `fx` o `fy`;
+3. el nombre del operador.
+
+Un operador modifica la forma de escribir y analizar un término, pero no crea por sí solo el comportamiento del predicado correspondiente.
+
+---
+
+## 37. Módulos
+
+Los módulos permiten dividir un programa en archivos, controlar qué predicados se hacen públicos y reducir conflictos de nombres.
+
+Archivo `familia.pl`:
+
+```prolog
+:- module(familia, [
+    padre/2,
+    abuelo/2
+]).
+
+padre(carlos, pedro).
+padre(pedro, lucas).
+
+abuelo(X, Z) :-
+    padre(X, Y),
+    padre(Y, Z).
+```
+
+La directiva `module/2` recibe:
+
+- el nombre del módulo;
+- la lista de predicados que exporta.
+
+Desde otro archivo puede importarse el módulo:
+
+```prolog
+:- use_module(familia).
+```
+
+Después de importarlo pueden utilizarse directamente los predicados exportados:
+
+```prolog
+mostrar_abuelo :-
+    abuelo(carlos, lucas),
+    writeln("Relacion encontrada").
+```
+
+Los predicados no incluidos en la lista de exportación permanecen internos al módulo.
+
+---
+
+## 38. Bibliotecas
+
+SWI-Prolog incluye numerosas bibliotecas que pueden cargarse mediante `use_module/1`.
+
+Ejemplo:
+
+```prolog
+:- use_module(library(lists)).
+```
+
+Otro ejemplo con utilidades para aplicar predicados a listas:
+
+```prolog
+:- use_module(library(apply)).
+
+duplicar(X, Y) :-
+    Y is X * 2.
+
+duplicar_lista(Entrada, Salida) :-
+    maplist(duplicar, Entrada, Salida).
+```
+
+Consulta:
+
+```prolog
+?- duplicar_lista([1, 2, 3], Resultado).
+Resultado = [2, 4, 6].
+```
+
+---
+
+## 39. Manejo de excepciones
+
+Los predicados fundamentales para manejar excepciones son `throw/1` y `catch/3`.
+
+### 39.1 Generar una excepción
+
+```prolog
+dividir(_, 0, _) :-
+    throw(divisor_cero).
+
+dividir(A, B, Resultado) :-
+    Resultado is A / B.
+```
+
+`throw/1` interrumpe la ejecución normal y genera una excepción representada mediante un término.
+
+### 39.2 Capturar una excepción
+
+```prolog
+division_segura(A, B, Resultado) :-
+    catch(
+        dividir(A, B, Resultado),
+        divisor_cero,
+        manejar_divisor_cero
+    ).
+
+manejar_divisor_cero :-
+    writeln("No se puede dividir entre cero"),
+    fail.
+```
+
+La forma general es:
+
+```prolog
+catch(Objetivo, Excepcion, Recuperacion)
+```
+
+1. `Objetivo` es el código protegido.
+2. `Excepcion` es el patrón que debe unificar con el término lanzado.
+3. `Recuperacion` se ejecuta cuando la excepción es capturada.
+
+Los errores del sistema suelen utilizar términos con la forma `error(Descripcion, Contexto)`.
+
+---
+
+## 40. Lectura y escritura de archivos
+
+Los archivos se manipulan normalmente mediante streams.
+
+### 40.1 Abrir y cerrar un archivo
+
+```prolog
+open('datos.txt', read, Stream),
+close(Stream).
+```
+
+Los modos más comunes son:
+
+| Modo | Función |
+| --- | --- |
+| `read` | Abre para lectura. |
+| `write` | Abre para escritura y reemplaza el contenido existente. |
+| `append` | Abre para agregar contenido al final. |
+
+### 40.2 Leer un término de forma segura
+
+```prolog
+leer_termino(Archivo, Termino) :-
+    setup_call_cleanup(
+        open(Archivo, read, Stream),
+        read_term(Stream, Termino, []),
+        close(Stream)
+    ).
+```
+
+`setup_call_cleanup/3` garantiza que el stream se cierre aunque la lectura falle o produzca una excepción.
+
+Al alcanzar el final del archivo, `read_term/3` devuelve el átomo `end_of_file`.
+
+### 40.3 Escribir en un archivo
+
+```prolog
+guardar_persona(Archivo, Persona) :-
+    setup_call_cleanup(
+        open(Archivo, write, Stream),
+        format(Stream, '~q.~n', [Persona]),
+        close(Stream)
+    ).
+```
+
+Ejemplo:
+
+```prolog
+?- guardar_persona('persona.pl', persona(ana, 25)).
+true.
+```
+
+El marcador `~q` escribe el término de una forma que normalmente puede volver a leerse como código Prolog.
+
+---
+
+## 41. Predicados dinámicos
+
+Por defecto, las cláusulas cargadas desde un archivo se consideran estáticas. Si se desea agregar o eliminar hechos durante la ejecución, el predicado debe declararse dinámico.
+
+```prolog
+:- dynamic persona/1.
+
+persona(ana).
+```
+
+Agregar un hecho al final del predicado:
+
+```prolog
+agregar_persona(Persona) :-
+    assertz(persona(Persona)).
+```
+
+Eliminar la primera cláusula que coincida:
+
+```prolog
+eliminar_una_persona(Persona) :-
+    retract(persona(Persona)).
+```
+
+Eliminar todas las cláusulas que coincidan:
+
+```prolog
+eliminar_persona(Persona) :-
+    retractall(persona(Persona)).
+```
+
+Estos cambios afectan la base de conocimiento en memoria. No modifican automáticamente el archivo fuente original.
+
+Los predicados dinámicos son útiles cuando la información debe cambiar durante la ejecución, pero no deben utilizarse como sustituto automático de parámetros, recursión o estructuras de datos locales.
+
+---
+
+## 42. Árboles como términos recursivos
+
+Los términos compuestos pueden contener otros términos de la misma forma. Esto permite representar estructuras recursivas como árboles.
+
+Un árbol binario puede representarse mediante:
+
+```prolog
+vacio
+arbol(Valor, Izquierdo, Derecho)
+```
+
+Ejemplo:
+
+```prolog
+arbol(10,
+      arbol(5, vacio, vacio),
+      arbol(15, vacio, vacio)).
+```
+
+Predicado para buscar un elemento:
+
+```prolog
+pertenece_arbol(X, arbol(X, _, _)).
+
+pertenece_arbol(X, arbol(_, Izquierdo, _)) :-
+    pertenece_arbol(X, Izquierdo).
+
+pertenece_arbol(X, arbol(_, _, Derecho)) :-
+    pertenece_arbol(X, Derecho).
+```
+
+Consulta:
+
+```prolog
+?- Arbol = arbol(10,
+                 arbol(5, vacio, vacio),
+                 arbol(15, vacio, vacio)),
+   pertenece_arbol(15, Arbol).
+Arbol = arbol(10, arbol(5, vacio, vacio), arbol(15, vacio, vacio)).
+```
